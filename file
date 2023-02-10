@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="408dp"
+        android:layout_height="427dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="310dp"
+        android:layout_marginEnd="1dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <Button
+            android:id="@+id/play"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="play" />
+
+        <Button
+            android:id="@+id/pause"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="pause" />
+
+        <Button
+            android:id="@+id/forward"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="forward" />
+
+        <Button
+            android:id="@+id/rewind"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="rewind" />
+
+        <Button
+            android:id="@+id/stop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="stop" />
+
+        <Button
+            android:id="@+id/restart"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="restart" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="233dp"
+        android:layout_height="59dp"
+        android:layout_marginStart="61dp"
+        android:layout_marginTop="53dp"
+        android:layout_marginEnd="83dp"
+        android:layout_marginBottom="205dp"
+        android:text="media player"
+        android:textSize="34sp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.823"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="237dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="101dp"
+        android:layout_marginTop="71dp"
+        android:layout_marginEnd="73dp"
+        android:layout_marginBottom="60dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+__________________________________________________________________________________________________________________________________________
+
+
+
+package com.example.sample;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+
+    int starttime=0;
+    int stoptime=0;
+    int forwardtime=5000;
+    int backwardtime=5000;
+    MediaPlayer mediaPlayer,mediaPlayernew;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        mediaPlayer = MediaPlayer.create(this,R.raw.song);
+        mediaPlayernew=MediaPlayer.create(this,R.raw.song);
+
+        TextView songtitle=findViewById(R.id.textView2) ;
+        songtitle.setText("song");
+
+        Button play=findViewById(R.id.play);
+        play.setText()
+
+
+
+        Button play = findViewById(R.id.play);
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"Playing song",Toast.LENGTH_SHORT).show();
+                mediaPlayer.start();
+            }
+        });
+
+        Button pause=findViewById(R.id.pause);
+        pause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"pausing song",Toast.LENGTH_SHORT).show();
+                mediaPlayer.pause();
+
+            }
+        });
+
+        Button forward=findViewById(R.id.forward);
+        forward.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currpo=mediaPlayer.getCurrentPosition();
+                if((currpo+forwardtime)<=(stoptime=mediaPlayer.getDuration())){
+                    mediaPlayer.seekTo(currpo+forwardtime);
+                }
+            }
+        });
+
+
+        Button rewind=findViewById(R.id.rewind);
+        rewind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int currpo=mediaPlayer.getCurrentPosition();
+                if((currpo-backwardtime)>=0){
+                    mediaPlayer.seekTo(currpo-backwardtime);
+                }
+            }
+        });
+
+        Button stop=findViewById(R.id.stop);
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"stopping song",Toast.LENGTH_SHORT).show();
+                mediaPlayer.stop();
+
+                mediaPlayer=mediaPlayernew;
+            }
+        });
+
+
+        Button restart=findViewById(R.id.restart);
+        restart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getApplicationContext(),"restating song",Toast.LENGTH_SHORT).show();
+                mediaPlayer.seekTo(0);
+                mediaPlayer.start();
+
+            }
+        });
+    }
+}
+
